@@ -16,11 +16,10 @@ private:
 	double n;
 public:
 	Perceptron() {
-		n = 0.1;
+		n = 0.01;
 		int a;
 		suma = 0;
-		plik.open("plik.txt", ios::in);
-		if (plik.good()) cout << "otwarto plik" << endl;
+
 		srand(time(NULL));
 		for (int i = 0; i < 26; ++i) {
 			a = (rand() % 11)+1;
@@ -41,38 +40,45 @@ public:
 		return suma;
 	}
 	bool f_aktywacji() {
-		if (suma > 0) return true;
+		if (suma > 0.5) return true;
 		else return false;
 	}
 
 	void learn() {
 		//string str;
-		if (plik.good()) {
-			while (!plik.eof()) {
-				for (int i = 0; i < 26; ++i) {
-					plik >> x[i];
-				}
-				plik >> y;
-				sigma();
-				if (f_aktywacji() == 0 && y == 1) {
-					for (int i = 0; i < 26; ++i) {
-						w[i] = w[i] + n*x[i];
-					}
-				}
-				if (f_aktywacji() == 1 && y == 0) {
-					for (int i = 0; i < 26; ++i) {
-						w[i] = w[i] - n*x[i];
-					}
-				}
-				cout << "WAGI" << endl;
-				for (int i = 0; i < 26; ++i) {
-					cout << w[i] << " ";
-				}
-				cout << endl;
-				
 
+		for (int i = 0; i < 40; ++i) {
+			plik.open("plik.txt", ios::in);
+			//	if (plik.good()) cout << "otwarto plik" << endl;
+			if (plik.good()) {
+				while (!plik.eof()) {
+					for (int i = 0; i < 26; ++i) {
+						plik >> x[i];
+					}
+					plik >> y;
+					sigma();
+					if (f_aktywacji() == 0 && y == 1) {
+						for (int i = 0; i < 26; ++i) {
+							w[i] = w[i] + n*x[i];
+						}
+					}
+					if (f_aktywacji() == 1 && y == 0) {
+						for (int i = 0; i < 26; ++i) {
+							w[i] = w[i] - n*x[i];
+						}
+					}
+					cout << "WAGI" << endl;
+					for (int i = 0; i < 26; ++i) {
+						cout << w[i] << " ";
+					}
+					cout << endl;
+
+
+				}
 			}
 		}
+
+	
 	}
 
 
